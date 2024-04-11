@@ -1,0 +1,699 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/board.png">
+  <link rel="icon" href="/img/board.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Tenth-crew">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="OPenrank是一个开源贡献评价指标，这是我的学习记录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenRank">
+<meta property="og:url" content="http://tenth-crew.github.io/2024/04/11/OpenRank/index.html">
+<meta property="og:site_name" content="Tenth-crew Blog">
+<meta property="og:description" content="OPenrank是一个开源贡献评价指标，这是我的学习记录">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/39023202/1708583727048-4e3eadde-d91a-45fd-b148-c0d52d2e9bc0.png#averageHue=%2314181f&clientId=uea71e7c1-2f2b-4&from=paste&height=225&id=u547d23a8&originHeight=281&originWidth=715&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=132003&status=done&style=none&taskId=ua3111d78-129b-4c83-bf61-72db9874edf&title=&width=572">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/39023202/1708592032392-b7b491e8-ff80-4c1c-abec-c246244ec66b.png#averageHue=%23f0f0f0&clientId=uea71e7c1-2f2b-4&from=paste&height=49&id=u0ccc2b6d&originHeight=69&originWidth=795&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=15748&status=done&style=none&taskId=ue987b6ff-fba2-4a17-a0e5-705bf308ba2&title=&width=567.5">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/39023202/1708592269627-c5d19925-b159-4448-976f-1a230a3cea25.png#averageHue=%23e8e8e8&clientId=uea71e7c1-2f2b-4&from=paste&height=16&id=u2b50f57b&originHeight=29&originWidth=256&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=2925&status=done&style=none&taskId=u82ccc298-4011-4da4-84f0-69bfac2cc9b&title=&width=143">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/39023202/1708592323322-c7dc144b-d314-4c7a-8b19-ff9fbf44505c.png#averageHue=%23ededed&clientId=uea71e7c1-2f2b-4&from=paste&height=21&id=u1e1034c0&originHeight=37&originWidth=518&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=5149&status=done&style=none&taskId=u519a60aa-9e62-46e1-a133-5d6acdf6cc1&title=&width=301">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/39023202/1708590243976-2da7249d-e373-4456-bc0f-a4cff408217a.png#averageHue=%23f7f7f7&clientId=uea71e7c1-2f2b-4&from=paste&height=139&id=uccc29a5d&originHeight=278&originWidth=335&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=17247&status=done&style=none&taskId=ued6affe0-c747-4015-be45-03580e86a72&title=&width=167.5">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/39023202/1708590562346-08851aca-7eb8-49d3-b14d-c319c3a46611.png#averageHue=%23f9f9f9&clientId=uea71e7c1-2f2b-4&from=paste&height=84&id=u8d89efd6&originHeight=128&originWidth=256&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=5755&status=done&style=none&taskId=u16dc24e7-570b-432e-8c39-f907b6975cb&title=&width=168">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/39023202/1708590679842-3d303578-b52e-45e1-bc27-cea46b94563c.png#averageHue=%23fbfbfb&clientId=uea71e7c1-2f2b-4&from=paste&height=44&id=u966db1f0&originHeight=61&originWidth=203&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=2492&status=done&style=none&taskId=u81aa8531-dd89-4127-b0e5-a5ac1d23a86&title=&width=145.5">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/39023202/1708590707865-34309f86-18b8-4289-b56c-385ad686b7ed.png#averageHue=%23fbfbfb&clientId=uea71e7c1-2f2b-4&from=paste&height=56&id=uc1ae4d4f&originHeight=77&originWidth=240&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=3634&status=done&style=none&taskId=ub14547c1-3c78-4bd6-8bc2-6f531970cf6&title=&width=173">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/39023202/1708590851936-ecc32376-af90-4c6d-9c66-c4053cd2205f.png#averageHue=%23f9f9f9&clientId=uea71e7c1-2f2b-4&from=paste&height=139&id=u61152b57&originHeight=196&originWidth=237&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=8413&status=done&style=none&taskId=u9e8895c5-ad85-4771-ba17-a374a54f5cf&title=&width=167.5">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/39023202/1708590965111-0a66f22c-728f-47f5-83b0-fe335ba5bf52.png#averageHue=%23fdfdfd&clientId=uea71e7c1-2f2b-4&from=paste&height=173&id=u1a082235&originHeight=280&originWidth=531&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=19416&status=done&style=none&taskId=ubc820e97-2bae-449b-ae8b-69b4499a92c&title=&width=327.5">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/39023202/1708590985319-3b7f8a35-0753-4c54-9f18-c92327d76639.png#averageHue=%23fbfaf8&clientId=uea71e7c1-2f2b-4&from=paste&height=90&id=ud1fc70c8&originHeight=139&originWidth=877&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=23236&status=done&style=none&taskId=u1f68d6d1-35df-4f7c-a4c8-963be594a33&title=&width=569.5">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/39023202/1708591164521-85c217bb-9d0f-4eb7-8e09-4de350d1f073.png#averageHue=%23fbf9f7&clientId=uea71e7c1-2f2b-4&from=paste&height=200&id=uf3c32468&originHeight=301&originWidth=913&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=58645&status=done&style=none&taskId=uf2cfe7a2-4b12-493b-b26b-53f711f4c01&title=&width=605.5">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/39023202/1708591443738-0e686a83-116b-42b6-95e9-e6189c103499.png#averageHue=%23fcfcfc&clientId=uea71e7c1-2f2b-4&from=paste&height=127&id=u5b5c889a&originHeight=178&originWidth=402&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=9234&status=done&style=none&taskId=uf4634f39-3f5d-4ab1-9a8d-7c864c0bce1&title=&width=286">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/39023202/1708585493058-0e8606a2-f9d3-43d6-a29a-081e2c9e9ec5.png#averageHue=%23151b24&clientId=uea71e7c1-2f2b-4&from=paste&height=298&id=uc8e4871e&originHeight=595&originWidth=1211&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=702955&status=done&style=none&taskId=uf74c3e69-f77d-407b-bec2-99d49015cbe&title=&width=605.5">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/39023202/1708586527682-4c33bfe7-0fd5-4298-9fa2-d65f2003eff2.png#averageHue=%23f8f6f5&clientId=uea71e7c1-2f2b-4&from=paste&height=199&id=ucf542ca1&originHeight=398&originWidth=484&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=88938&status=done&style=none&taskId=ua3638677-4324-4185-a7aa-72607761c60&title=&width=242">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/39023202/1709019483599-4705f16e-4b62-49a3-8312-10a9f418949e.png#averageHue=%23fafafa&clientId=ueaa63eb5-dd28-4&from=paste&height=119&id=uc59f6dff&originHeight=186&originWidth=865&originalType=binary&ratio=2&rotation=0&showTitle=false&size=22133&status=done&style=none&taskId=u700437cd-1daf-474e-a20f-1d2e4c33ef9&title=&width=554.5">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/39023202/1709016084687-cb26d59c-c666-4afe-9f3f-95fb0ef8f1e3.png#averageHue=%23171e24&clientId=ueaa63eb5-dd28-4&from=paste&height=370&id=u13e629b1&originHeight=740&originWidth=1520&originalType=binary&ratio=2&rotation=0&showTitle=false&size=1136282&status=done&style=none&taskId=u886f4b31-8b25-4341-b686-4c497de6e02&title=&width=760">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/39023202/1709016346651-e3f24521-bca8-4d61-80ed-8e744e521cf4.png#averageHue=%2311181e&clientId=ueaa63eb5-dd28-4&from=paste&height=273&id=ufd8e7748&originHeight=546&originWidth=1551&originalType=binary&ratio=2&rotation=0&showTitle=false&size=632088&status=done&style=none&taskId=u7ed25773-d7d7-4274-b896-56708abe88c&title=&width=775.5">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/39023202/1709018355179-cfe9d0df-fb39-475e-83c3-522402b573bb.png#averageHue=%23171e24&clientId=ueaa63eb5-dd28-4&from=paste&height=363&id=u56f741c2&originHeight=726&originWidth=1498&originalType=binary&ratio=2&rotation=0&showTitle=false&size=1083482&status=done&style=none&taskId=u7da202d8-48f1-4d4c-a9c6-ef3e66b2d41&title=&width=749">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/39023202/1709021645763-d2e5e156-c359-438a-8fd7-bd477af75138.png#averageHue=%23384b5e&clientId=ueaa63eb5-dd28-4&from=paste&height=501&id=u6524ae60&originHeight=1002&originWidth=2102&originalType=binary&ratio=2&rotation=0&showTitle=false&size=1778366&status=done&style=none&taskId=ua21c9efe-fbf3-437c-8c82-4dad1d09ced&title=&width=1051">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/39023202/1709021894077-646289f3-14a6-4524-a590-04b4e74b327f.png#averageHue=%23171e24&clientId=ueaa63eb5-dd28-4&from=paste&height=607&id=u7f032063&originHeight=1213&originWidth=2226&originalType=binary&ratio=2&rotation=0&showTitle=false&size=2297197&status=done&style=none&taskId=u796002e4-674c-412e-8a43-453108e9c1a&title=&width=1113">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/39023202/1709024193461-8956ea14-857e-4813-b34f-69768e60f5fb.png#averageHue=%2311191e&clientId=ueaa63eb5-dd28-4&from=paste&height=378&id=u61f60488&originHeight=755&originWidth=1099&originalType=binary&ratio=2&rotation=0&showTitle=false&size=752798&status=done&style=none&taskId=ue8aeddf5-af0d-4e05-8d98-eebc5b3f849&title=&width=549.5">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/39023202/1709024219311-716cb2d3-fcbe-403c-8393-a8bab145a0ef.png#averageHue=%23151b21&clientId=ueaa63eb5-dd28-4&from=paste&height=302&id=u66931b95&originHeight=604&originWidth=1194&originalType=binary&ratio=2&rotation=0&showTitle=false&size=733961&status=done&style=none&taskId=u3d705044-c62d-4a93-a5a1-66de58a906a&title=&width=597">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/39023202/1709024655892-cabcb115-d0bd-4a26-9354-c7dc69373558.png#averageHue=%23121a1f&clientId=ueaa63eb5-dd28-4&from=paste&height=370&id=u990e5f0e&originHeight=740&originWidth=1427&originalType=binary&ratio=2&rotation=0&showTitle=false&size=493968&status=done&style=none&taskId=uff8d1eb9-a6f7-4126-9902-69fe262b387&title=&width=713.5">
+<meta property="article:published_time" content="2024-04-11T05:51:52.000Z">
+<meta property="article:modified_time" content="2024-04-11T06:34:15.756Z">
+<meta property="article:author" content="Tenth-crew">
+<meta property="article:tag" content="study">
+<meta property="article:tag" content="report">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2024/png/39023202/1708583727048-4e3eadde-d91a-45fd-b148-c0d52d2e9bc0.png#averageHue=%2314181f&clientId=uea71e7c1-2f2b-4&from=paste&height=225&id=u547d23a8&originHeight=281&originWidth=715&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=132003&status=done&style=none&taskId=ua3111d78-129b-4c83-bf61-72db9874edf&title=&width=572">
+  
+  
+  
+  <title>OpenRank - Tenth-crew Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"tenth-crew.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Tenth-crew Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/postimg.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="OpenRank"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-11 13:51" pubdate>
+          2024年4月11日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          20 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">OpenRank</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <meta name="referrer" content="no-referrer"/>
+
+<p>OPenrank是一个开源贡献评价指标，这是我的学习记录</p>
+<span id="more"></span>
+
+<h2 id=""><a href="#" class="headerlink" title=""></a><img src="https://cdn.nlark.com/yuque/0/2024/png/39023202/1708583727048-4e3eadde-d91a-45fd-b148-c0d52d2e9bc0.png#averageHue=%2314181f&clientId=uea71e7c1-2f2b-4&from=paste&height=225&id=u547d23a8&originHeight=281&originWidth=715&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=132003&status=done&style=none&taskId=ua3111d78-129b-4c83-bf61-72db9874edf&title=&width=572" srcset="/img/loading.gif" lazyload alt="image.png"></h2><h2 id="马尔科夫链"><a href="#马尔科夫链" class="headerlink" title="马尔科夫链"></a>马尔科夫链</h2><p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E9%93%BE">https://zh.wikipedia.org/wiki/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E9%93%BE</a><br>马尔可夫链是满足马尔可夫性质的<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F">随机变量</a>序列_X_1, _X_2, <em>X_3, …，即给出当前状态，将来状态和过去状态是相互独立的。从形式上看<br><img src="https://cdn.nlark.com/yuque/0/2024/png/39023202/1708592032392-b7b491e8-ff80-4c1c-abec-c246244ec66b.png#averageHue=%23f0f0f0&clientId=uea71e7c1-2f2b-4&from=paste&height=49&id=u0ccc2b6d&originHeight=69&originWidth=795&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=15748&status=done&style=none&taskId=ue987b6ff-fba2-4a17-a0e5-705bf308ba2&title=&width=567.5" srcset="/img/loading.gif" lazyload alt="image.png"><br>Xi的可能值构成可数集S，叫做该链的“状态空间”。<br>通常用一系列<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%9C%89%E5%90%91%E5%9B%BE">有向图</a>来描述马尔可夫链，其中图_n_的边用从时刻_n_的状态到时刻_n+1_的状态的概率<img src="https://cdn.nlark.com/yuque/0/2024/png/39023202/1708592269627-c5d19925-b159-4448-976f-1a230a3cea25.png#averageHue=%23e8e8e8&clientId=uea71e7c1-2f2b-4&from=paste&height=16&id=u2b50f57b&originHeight=29&originWidth=256&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=2925&status=done&style=none&taskId=u82ccc298-4011-4da4-84f0-69bfac2cc9b&title=&width=143" srcset="/img/loading.gif" lazyload alt="image.png">来标记。也可以用从时刻_n_到时刻_n+1_的<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%BD%89%E7%A7%BB%E7%9F%A9%E9%99%A3">转移矩阵</a>表示同样的信息。但是，马氏链常常被假定为时齐的（见下文的变种），在这种情况下，图和矩阵与_n_无关，因此也不表现为序列。<br><strong>变种</strong>：<strong>时齐马尔可夫链</strong>（或<strong>静态马尔可夫链</strong>）是对于所有_n：</em><img src="https://cdn.nlark.com/yuque/0/2024/png/39023202/1708592323322-c7dc144b-d314-4c7a-8b19-ff9fbf44505c.png#averageHue=%23ededed&clientId=uea71e7c1-2f2b-4&from=paste&height=21&id=u1e1034c0&originHeight=37&originWidth=518&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=5149&status=done&style=none&taskId=u519a60aa-9e62-46e1-a133-5d6acdf6cc1&title=&width=301" srcset="/img/loading.gif" lazyload alt="image.png">转移过程与n无关。</p>
+<h2 id="PageRank"><a href="#PageRank" class="headerlink" title="PageRank"></a>PageRank</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/137561088">https://zhuanlan.zhihu.com/p/137561088</a><br>朴素观念：其他网站导向某一个网站的链接越多，说明后者就愈重要。<br>转移矩阵：以下图的网络所示<br><img src="https://cdn.nlark.com/yuque/0/2024/png/39023202/1708590243976-2da7249d-e373-4456-bc0f-a4cff408217a.png#averageHue=%23f7f7f7&clientId=uea71e7c1-2f2b-4&from=paste&height=139&id=uccc29a5d&originHeight=278&originWidth=335&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=17247&status=done&style=none&taskId=ued6affe0-c747-4015-be45-03580e86a72&title=&width=167.5" srcset="/img/loading.gif" lazyload alt="image.png"><br>转移矩阵按列写，A到B、C是1&#x2F;2，到自己为0。一次类推写出随机游走矩阵。<br><img src="https://cdn.nlark.com/yuque/0/2024/png/39023202/1708590562346-08851aca-7eb8-49d3-b14d-c319c3a46611.png#averageHue=%23f9f9f9&clientId=uea71e7c1-2f2b-4&from=paste&height=84&id=u8d89efd6&originHeight=128&originWidth=256&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=5755&status=done&style=none&taskId=u16dc24e7-570b-432e-8c39-f907b6975cb&title=&width=168" srcset="/img/loading.gif" lazyload alt="image.png"><br>基础的Pagerank由此定义。随机游走在某个时刻t访问各个结点的概率分布是马尔科夫链时刻t的状态分布，可以用一个n维列向量Rt表示，那么下一时刻的概率分布为：<br><img src="https://cdn.nlark.com/yuque/0/2024/png/39023202/1708590679842-3d303578-b52e-45e1-bc27-cea46b94563c.png#averageHue=%23fbfbfb&clientId=uea71e7c1-2f2b-4&from=paste&height=44&id=u966db1f0&originHeight=61&originWidth=203&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=2492&status=done&style=none&taskId=u81aa8531-dd89-4127-b0e5-a5ac1d23a86&title=&width=145.5" srcset="/img/loading.gif" lazyload alt="image.png"><br>则极限存在，极限为：<br><img src="https://cdn.nlark.com/yuque/0/2024/png/39023202/1708590707865-34309f86-18b8-4289-b56c-385ad686b7ed.png#averageHue=%23fbfbfb&clientId=uea71e7c1-2f2b-4&from=paste&height=56&id=uc1ae4d4f&originHeight=77&originWidth=240&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=3634&status=done&style=none&taskId=ub14547c1-3c78-4bd6-8bc2-6f531970cf6&title=&width=173" srcset="/img/loading.gif" lazyload alt="image.png"><br>极限向量   <strong>MR&#x3D;R</strong><br>这个平稳分布的各个分量为各个节点的PageRank值<br><img src="https://cdn.nlark.com/yuque/0/2024/png/39023202/1708590851936-ecc32376-af90-4c6d-9c66-c4053cd2205f.png#averageHue=%23f9f9f9&clientId=uea71e7c1-2f2b-4&from=paste&height=139&id=u61152b57&originHeight=196&originWidth=237&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=8413&status=done&style=none&taskId=u9e8895c5-ad85-4771-ba17-a374a54f5cf&title=&width=167.5" srcset="/img/loading.gif" lazyload alt="image.png"><br>有如下性质：<br><img src="https://cdn.nlark.com/yuque/0/2024/png/39023202/1708590965111-0a66f22c-728f-47f5-83b0-fe335ba5bf52.png#averageHue=%23fdfdfd&clientId=uea71e7c1-2f2b-4&from=paste&height=173&id=u1a082235&originHeight=280&originWidth=531&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=19416&status=done&style=none&taskId=ubc820e97-2bae-449b-ae8b-69b4499a92c&title=&width=327.5" srcset="/img/loading.gif" lazyload alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2024/png/39023202/1708590985319-3b7f8a35-0753-4c54-9f18-c92327d76639.png#averageHue=%23fbfaf8&clientId=uea71e7c1-2f2b-4&from=paste&height=90&id=ud1fc70c8&originHeight=139&originWidth=877&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=23236&status=done&style=none&taskId=u1f68d6d1-35df-4f7c-a4c8-963be594a33&title=&width=569.5" srcset="/img/loading.gif" lazyload alt="image.png"><br>**定理1 **不可约且非周期的有限状态马尔可夫链，有唯一平稳分布存在，并且 当时间趋于无穷时状态分布收敛于唯一的平稳分布。</p>
+<hr>
+<p>上面介绍的是基础定义的PageRank，下面介绍<strong>一般定义的PageRank</strong><br>PageRank 一般定义的想法是在基本定义的基础上导入平滑项。<br><img src="https://cdn.nlark.com/yuque/0/2024/png/39023202/1708591164521-85c217bb-9d0f-4eb7-8e09-4de350d1f073.png#averageHue=%23fbf9f7&clientId=uea71e7c1-2f2b-4&from=paste&height=200&id=uf3c32468&originHeight=301&originWidth=913&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=58645&status=done&style=none&taskId=uf2cfe7a2-4b12-493b-b26b-53f711f4c01&title=&width=605.5" srcset="/img/loading.gif" lazyload alt="image.png"><br>阻尼因子d由经验决定，当d接近1的时候，随机游走主要按照M进行，当d接近0的时候，随机游走主要以等概率随机访问各个结点。<br><strong>由于采用平滑项，所有节点的PageRank的值都不会为0</strong>，具有以下性质<br><img src="https://cdn.nlark.com/yuque/0/2024/png/39023202/1708591443738-0e686a83-116b-42b6-95e9-e6189c103499.png#averageHue=%23fcfcfc&clientId=uea71e7c1-2f2b-4&from=paste&height=127&id=u5b5c889a&originHeight=178&originWidth=402&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=9234&status=done&style=none&taskId=uf4634f39-3f5d-4ab1-9a8d-7c864c0bce1&title=&width=286" srcset="/img/loading.gif" lazyload alt="image.png"><br>一般 PageRank 的定义意味着互联网浏览者，按照以下方法在网上随机游走：任意一个网页上，浏览者或者以概率 d 决定按照超链接随机跳转，这时以等概率从连接出去的超链接跳转到下一个网页；或者以概率 (1-d) 决定完全随机跳转，这时以等概率 1&#x2F;n 跳转到任意一个网页。 第二个机制保证从没有连接出去的超链接的网页也可以跳转出。这样可以保证平稳分布，即一般 PageRank 的存在，因而一般 PageRank 适用于任何结构的网络。</p>
+<h2 id="异质图（异质信息网络）"><a href="#异质图（异质信息网络）" class="headerlink" title="异质图（异质信息网络）"></a>异质图（异质信息网络）</h2><p><a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%BC%82%E8%B4%A8%E4%BF%A1%E6%81%AF%E7%BD%91%E7%BB%9C/22138885">https://baike.baidu.com/item/%E5%BC%82%E8%B4%A8%E4%BF%A1%E6%81%AF%E7%BD%91%E7%BB%9C/22138885</a><br>异质信息网络是一种信息网络，包含了节点和边，并且该节点和边具有一种或多种类型，异质信息网络包含了更更丰富的语义信息。<br>信息网络被定义为一个有向网络图G&#x3D;(V,E)，其中，V是所有实体结点的集合，E是所有关系边的集合。并且存在着一个结点类型的映射函数φ:V→A和一个边类型的映射函数Ψ:E→R，对于每个对象v∈V属于一种特殊的对象类型φ(v)∈A，每个链接e∈E属于一种特殊的关系类型Ψ(e)∈R，那么这种网络类型就是信息网络。当对象类型的种类|A|&gt;1或者关系类型的种类|R|&gt;1时，这种信息网络是异质信息网络，否则，它是一种同质信息网络 [1]。</p>
+<ul>
+<li>1Han J. Mining heterogeneous information networks: the next frontier[C]&#x2F;&#x2F; ACM SIGKDD International Conference on Knowledge Discovery and Data Mining. ACM, 2012:2-3.</li>
+</ul>
+<h2 id="Louvain社区发现算法"><a href="#Louvain社区发现算法" class="headerlink" title="Louvain社区发现算法"></a>Louvain社区发现算法</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/556291759">https://zhuanlan.zhihu.com/p/556291759</a><br>很感谢研一上学到的课程知识<br>基于贪心原理的</p>
+<ol>
+<li>把每一个点视为一个一个小社区</li>
+<li>把点不断尝试加入其他节点，看加入哪一个可以使得社区变化度最高。</li>
+<li>遍历完一遍后将每个社区压缩为一个新的超级节点，超节点的权重又社区内部的权重求和作为超节点自环的权重，超节点之间的社区存在边，将其权重求和作为超节点之间的权重。</li>
+<li>不断循环这一过程，知道社区模块度不再变大。</li>
+</ol>
+<h2 id="在异质信息网络上如何保证pagerank的收敛"><a href="#在异质信息网络上如何保证pagerank的收敛" class="headerlink" title="在异质信息网络上如何保证pagerank的收敛"></a>在异质信息网络上如何保证pagerank的收敛</h2><h2 id="数学理论中的符号与定义"><a href="#数学理论中的符号与定义" class="headerlink" title="数学理论中的符号与定义"></a>数学理论中的符号与定义</h2><p><img src="https://cdn.nlark.com/yuque/0/2024/png/39023202/1708585493058-0e8606a2-f9d3-43d6-a29a-081e2c9e9ec5.png#averageHue=%23151b24&clientId=uea71e7c1-2f2b-4&from=paste&height=298&id=uc8e4871e&originHeight=595&originWidth=1211&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=702955&status=done&style=none&taskId=uf74c3e69-f77d-407b-bec2-99d49015cbe&title=&width=605.5" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<h2 id="中心性"><a href="#中心性" class="headerlink" title="中心性"></a>中心性</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/yyl424525/article/details/103108506">https://blog.csdn.net/yyl424525/article/details/103108506</a><br>在图论和网络分析中，<strong>中心性（Centrality）是判断网络中节点重要性&#x2F;影响力的指标</strong>。</p>
+<ul>
+<li>点度中心性：在无向网络中，我们可以用一个节点的度数来衡量中心性。</li>
+<li>中介中心性（betweenness）：简单的节点betweeness是计算所有最短路径经过这个节点的次数。这里的betweeness不是简单的计数，<strong>而是要把经过该节点的最短路径数除以所有的最短路径总数，这个比值作为该节点的中介中心性。</strong></li>
+</ul>
+<p>首先，我们计算节点D之外，所有节点对之间的最短路径有多少条，这里是15条（在6个节点中选择两个节点即节点对的个数）。<br>然后，我们再看所有这些最短路径中有多少条经过节点D，例如节点A要想找到节点E，必须经过节点D。经过节点D的最短路径有9条。<br>最后，我们用经过节点D的最短路径除以所有节点对的最短路径总数，这个比率就是节点D的中介中心性。节点D的中介中心性是9&#x2F;15&#x3D;0.6。</p>
+<ul>
+<li>接近中心性（closeness）：<strong>如果节点到图中其他节点的最短距离都很小，那么它的接近中心性就很高。相比中介中心性，接近中心性更接近几何上的中心位置。示例如下：</strong></li>
+</ul>
+<p>假设我们要计算节点D的接近中心性，首先我们计算从节点D到所有其他节点的最短距离。从图中可以判断，节点D到所有其他节点的距离均为1，距离之和为6。因此，节点D的接近中心性为(7-1)&#x2F;6&#x3D;1。分子为网络中节点总数减去1。也就是说，如果一个人可以直接跟网络中所有其他人联系，那么他&#x2F;她的接近中心性就是1。对于其他节点，如节点A的接近中心性为(7-1)&#x2F;9&#x3D;0.667。</p>
+<ul>
+<li>特征向量中心性（eigenvector centrality）：一个节点的中心性是相邻节点中心性的函数。<strong>也就是说，与你连接的人越重要，你也就越重要。</strong></li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/39023202/1708586527682-4c33bfe7-0fd5-4298-9fa2-d65f2003eff2.png#averageHue=%23f8f6f5&clientId=uea71e7c1-2f2b-4&from=paste&height=199&id=ucf542ca1&originHeight=398&originWidth=484&originalType=binary&ratio=1.25&rotation=0&showTitle=false&size=88938&status=done&style=none&taskId=ua3638677-4324-4185-a7aa-72607761c60&title=&width=242" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<h2 id="影响权重"><a href="#影响权重" class="headerlink" title="影响权重"></a>影响权重</h2><h2 id="kronecker内积"><a href="#kronecker内积" class="headerlink" title="kronecker内积"></a>kronecker内积</h2><p><img src="https://cdn.nlark.com/yuque/0/2024/png/39023202/1709019483599-4705f16e-4b62-49a3-8312-10a9f418949e.png#averageHue=%23fafafa&clientId=ueaa63eb5-dd28-4&from=paste&height=119&id=uc59f6dff&originHeight=186&originWidth=865&originalType=binary&ratio=2&rotation=0&showTitle=false&size=22133&status=done&style=none&taskId=u700437cd-1daf-474e-a20f-1d2e4c33ef9&title=&width=554.5" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<h2 id="左随机矩阵"><a href="#左随机矩阵" class="headerlink" title="左随机矩阵"></a>左随机矩阵</h2><p>（left stochastic matrix）是实方阵，其中每一列求和为1。</p>
+<ul>
+<li><strong>右随机矩阵</strong>（right stochastic matrix）是实方阵，其中每一行求和为1。</li>
+<li><strong>双随机矩阵</strong>（doubly stochastic matrix）是非负实数方阵，每个行和列求和均为1。</li>
+</ul>
+<h2 id="本原矩阵"><a href="#本原矩阵" class="headerlink" title="本原矩阵"></a>本原矩阵</h2><p>若一个n阶非负不可约矩阵（A的模&#x3D;单特征值的个数）的单特征值个数为1，则称A为本原矩阵. </p>
+<h2 id="openrank的数学理论"><a href="#openrank的数学理论" class="headerlink" title="openrank的数学理论"></a>openrank的数学理论</h2><p>为什么使用L1规范化而不是L2是因为BiRank要求图是无向二步图，邻接矩阵是分块的对称矩阵<br>降低马太效应在这里的结果是解决了传统PageRank中入度高的节点最后PageRank值较高<br>此处的迭代公式由α决定了初值的作用<br>这里的方法是一维的<br><img src="https://cdn.nlark.com/yuque/0/2024/png/39023202/1709016084687-cb26d59c-c666-4afe-9f3f-95fb0ef8f1e3.png#averageHue=%23171e24&clientId=ueaa63eb5-dd28-4&from=paste&height=370&id=u13e629b1&originHeight=740&originWidth=1520&originalType=binary&ratio=2&rotation=0&showTitle=false&size=1136282&status=done&style=none&taskId=u886f4b31-8b25-4341-b686-4c497de6e02&title=&width=760" srcset="/img/loading.gif" lazyload alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2024/png/39023202/1709016346651-e3f24521-bca8-4d61-80ed-8e744e521cf4.png#averageHue=%2311181e&clientId=ueaa63eb5-dd28-4&from=paste&height=273&id=ufd8e7748&originHeight=546&originWidth=1551&originalType=binary&ratio=2&rotation=0&showTitle=false&size=632088&status=done&style=none&taskId=u7ed25773-d7d7-4274-b896-56708abe88c&title=&width=775.5" srcset="/img/loading.gif" lazyload alt="image.png"><br>下面是对OpenRank数学理论高纬度的推广<br>函数的映射值也是映射出一个d_i_的向量<br>图中表示节点中心度的方法是所有类型节点的维度的拼接，在自己有的维度上值会有大于0的值，那这样空间的使用会不会很浪费？<br><img src="https://cdn.nlark.com/yuque/0/2024/png/39023202/1709018355179-cfe9d0df-fb39-475e-83c3-522402b573bb.png#averageHue=%23171e24&clientId=ueaa63eb5-dd28-4&from=paste&height=363&id=u56f741c2&originHeight=726&originWidth=1498&originalType=binary&ratio=2&rotation=0&showTitle=false&size=1083482&status=done&style=none&taskId=u7da202d8-48f1-4d4c-a9c6-ef3e66b2d41&title=&width=749" srcset="/img/loading.gif" lazyload alt="image.png"><br>OpenRank工程实践的计算方法，当确定图可以收敛的时候可以直接采用第二种方法。<br><img src="https://cdn.nlark.com/yuque/0/2024/png/39023202/1709021645763-d2e5e156-c359-438a-8fd7-bd477af75138.png#averageHue=%23384b5e&clientId=ueaa63eb5-dd28-4&from=paste&height=501&id=u6524ae60&originHeight=1002&originWidth=2102&originalType=binary&ratio=2&rotation=0&showTitle=false&size=1778366&status=done&style=none&taskId=ua21c9efe-fbf3-437c-8c82-4dad1d09ced&title=&width=1051" srcset="/img/loading.gif" lazyload alt="image.png"><br>将开发者与项目连接从而降低迭代次数提升计算速度是一个经验性的结论，迭代次数的设置目前还没有什么明确的数学分析。<br>因为在实际的社区结构中，图密度其实很低，采用传统的PageRank算法的稠密图会使得计算量大幅增加<br><img src="https://cdn.nlark.com/yuque/0/2024/png/39023202/1709021894077-646289f3-14a6-4524-a590-04b4e74b327f.png#averageHue=%23171e24&clientId=ueaa63eb5-dd28-4&from=paste&height=607&id=u7f032063&originHeight=1213&originWidth=2226&originalType=binary&ratio=2&rotation=0&showTitle=false&size=2297197&status=done&style=none&taskId=u796002e4-674c-412e-8a43-453108e9c1a&title=&width=1113" srcset="/img/loading.gif" lazyload alt="image.png"><br>具体实践如下：<br><img src="https://cdn.nlark.com/yuque/0/2024/png/39023202/1709024193461-8956ea14-857e-4813-b34f-69768e60f5fb.png#averageHue=%2311191e&clientId=ueaa63eb5-dd28-4&from=paste&height=378&id=u61f60488&originHeight=755&originWidth=1099&originalType=binary&ratio=2&rotation=0&showTitle=false&size=752798&status=done&style=none&taskId=ue8aeddf5-af0d-4e05-8d98-eebc5b3f849&title=&width=549.5" srcset="/img/loading.gif" lazyload alt="image.png"><br>不同边权重如何确定，层次分析法的专家给出的权重可以有1-5和1-9两种维度<br><img src="https://cdn.nlark.com/yuque/0/2024/png/39023202/1709024219311-716cb2d3-fcbe-403c-8393-a8bab145a0ef.png#averageHue=%23151b21&clientId=ueaa63eb5-dd28-4&from=paste&height=302&id=u66931b95&originHeight=604&originWidth=1194&originalType=binary&ratio=2&rotation=0&showTitle=false&size=733961&status=done&style=none&taskId=u3d705044-c62d-4a93-a5a1-66de58a906a&title=&width=597" srcset="/img/loading.gif" lazyload alt="image.png"><br>示例：<br><img src="https://cdn.nlark.com/yuque/0/2024/png/39023202/1709024655892-cabcb115-d0bd-4a26-9354-c7dc69373558.png#averageHue=%23121a1f&clientId=ueaa63eb5-dd28-4&from=paste&height=370&id=u990e5f0e&originHeight=740&originWidth=1427&originalType=binary&ratio=2&rotation=0&showTitle=false&size=493968&status=done&style=none&taskId=uff8d1eb9-a6f7-4126-9902-69fe262b387&title=&width=713.5" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/study/" class="print-no-link">#study</a>
+      
+        <a href="/tags/report/" class="print-no-link">#report</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>OpenRank</div>
+      <div>http://tenth-crew.github.io/2024/04/11/OpenRank/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Tenth-crew</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年4月11日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/04/11/AI-from-Article-to-Image/" title="AI: from Article to Image">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">AI: from Article to Image</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/04/11/hello-world/" title="Hello World">
+                        <span class="hidden-mobile">Hello World</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
